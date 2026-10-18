@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Best Cars Dealership</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light"
+         style="background-color: darkturquoise; min-height: 1in;">
+        <div class="container-fluid">
+            <h2 style="padding-right: 5%;">Best Cars</h2>
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarText"
+                    aria-controls="navbarText"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                           aria-current="page"
+                           href="/contact/">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="card"
+          style="width: 80%; max-width: 900px; margin: 5% auto; padding: 3%;">
+        <h1 style="text-align: center;">Contact Us</h1>
+
+        <p style="text-align: center;">
+            Have a question or looking for your next car?
+            We would be happy to hear from you.
+        </p>
+
+        <hr>
+
+        <section style="margin-top: 1rem;">
+            <h2>Get in Touch</h2>
+
+            <p>
+                <strong>Dealership:</strong> Best Cars Dealership
+            </p>
+
+            <p>
+                <strong>Address:</strong> 100 Main Street, Toronto, ON, Canada
+            </p>
+
+            <p>
+                <strong>Phone:</strong> +1 416-555-0142
+            </p>
+
+            <p>
+                <strong>Email:</strong> contact@bestcars.example
+            </p>
+
+            <p>
+                <strong>Business Hours:</strong><br>
+                Monday–Friday: 9:00 AM – 6:00 PM<br>
+                Saturday: 10:00 AM – 4:00 PM<br>
+                Sunday: Closed
+            </p>
+        </section>
+
+        <section style="margin-top: 1rem;">
+            <h2>Visit Us</h2>
+            <p>
+                Visit our dealership to explore our selection of domestic
+                and imported vehicles. Our team is ready to help you find
+                a car that suits your needs and budget.
+            </p>
+        </section>
+    </main>
+    <script src="/static/bootstrap.bundle.min.js"></script>
+
+    <script>
+    const menuButton = document.querySelector('.navbar-toggler');
+    const navigationMenu = document.querySelector('#navbarText');
+
+    menuButton.addEventListener('click', function () {
+        navigationMenu.classList.toggle('show');
+
+        const isExpanded = navigationMenu.classList.contains('show');
+        menuButton.setAttribute('aria-expanded', isExpanded);
+    });
+</script>
+</body>
+</html>
