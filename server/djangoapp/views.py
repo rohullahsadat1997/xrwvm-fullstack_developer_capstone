@@ -1,8 +1,13 @@
+
+
+
+
 # Uncomment the required imports before adding the code
 
 # from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
+from .restapis import get_request, analyze_review_sentiments, post_review
 # from django.shortcuts import get_object_or_404, render, redirect
 # from django.contrib.auth import logout
 # from django.contrib import messages
@@ -126,3 +131,89 @@ def get_cars(request):
         })
 
     return JsonResponse({"CarModels": cars})
+
+
+def get_dealerships(request, state="All"):
+    if state == "All":
+        endpoint = "/fetchDealers"
+    else:
+        endpoint = "/fetchDealers/" + state
+
+    dealerships = get_request(endpoint)
+    return JsonResponse({
+        "status": 200,
+        "dealers": dealerships
+    })
+
+
+def get_dealer_details(request, dealer_id):
+    endpoint = "/fetchDealer/" + str(dealer_id)
+    dealer = get_request(endpoint)
+
+    return JsonResponse({
+        "status": 200,
+        "dealer": dealer
+    })
+
+
+def get_dealer_reviews(request, dealer_id):
+    endpoint = "/fetchReviews/dealer/" + str(dealer_id)
+    reviews = get_request(endpoint)
+
+    if isinstance(reviews, list):
+        for review_detail in reviews:
+            review_text = review_detail.get("review", "")
+
+            if review_text:
+                sentiment = analyze_review_sentiments(review_text)
+
+                review_detail["sentiment"] = (
+                    sentiment.get("sentiment", "neutral")
+                    if isinstance(sentiment, dict)
+                    else "neutral"
+                )
+
+    return JsonResponse({
+        "status": 200,
+        "reviews": reviews
+    })
+
+
+
+@csrf_exempt
+def add_review(request):
+    if request.user.is_anonymous == False:
+        if request.method != "POST":
+            return JsonResponse({
+                "status": 405,
+                "message": "POST request required"
+            }, status=405)
+
+        try:
+            data = json.loads(request.body)
+            response = post_review(data)
+            print(response)
+
+            if response is None:
+                return JsonResponse({
+                    "status": 502,
+                    "message": "Backend did not return a valid response"
+                }, status=502)
+
+            return JsonResponse({
+                "status": 200,
+                "message": "Review posted successfully"
+            })
+
+        except Exception as err:
+            print(f"Error posting review: {err}")
+            return JsonResponse({
+                "status": 401,
+                "message": "Error in posting review"
+            }, status=401)
+
+    else:
+        return JsonResponse({
+            "status": 403,
+            "message": "Unauthorized"
+        }, status=403)
